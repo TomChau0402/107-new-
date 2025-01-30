@@ -15,3 +15,7 @@ WIN venv\Scripts\activate
 4) install flask (pip stand for pipeline)
 WIN py -m pip install flask
 MAC python3 -m pip install flask
+
+5 run server comman is py server.py
+
+new notes
