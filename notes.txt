@@ -1,0 +1,17 @@
+install virtual library
+
+WIN py -m pip install virtualenv
+MAC python3 - pip virtualenv
+
+2) lets use the library tat we just install
+WIN py -m venv venv
+MAC python3 -m venv venv
+
+3) lets launch the virtual enviroment ( this is soemthing that needs to be executed everytime)
+
+MAC source venv/bin/activate
+WIN venv\Scripts\activate
+
+4) install flask (pip stand for pipeline)
+WIN py -m pip install flask
+MAC python3 -m pip install flask
