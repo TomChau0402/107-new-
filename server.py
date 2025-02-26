@@ -1,9 +1,12 @@
 
-from flask import Flask, request
+from flask import Flask, request, render_template
 import json
 from http import HTTPStatus
+from config import db
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app) # warning this disables CORS policy
 
 @app.get("/")
 def home():
@@ -23,31 +26,72 @@ def about():
     name={"name":"Tom"}
     return json.dumps(name)
    
+
+@app.get("/about-me")
+def about_me():
+    user_name = "Tom"
+    return render_template("about-me.html", name=user_name)
+
 products = []
 
 #get all products
 
+def fix_id(obj):
+    obj["_id"] = str(obj["_id"])
+    return obj
+
 @app.get("/api/products")
 def get_products():
-    return json.dumps(products), HTTPStatus.OK
+    products_db =[]
+    cursor = db.products.find({})
+    for product in cursor:
+        products_db.append(fix_id(product))
+    return json.dumps(products_db)
 
 #Post a product
 @app.post("/api/products")
-def save_product():
+def save_products():
     product = request.get_json()
-    print(f"product {product}")
-    products.append(product)
-    return "Product saved", 201
+    print(product)
+    db.products.insert_one(product)
+    return json.dumps(fix_id(product))
+
+
+############################################
+##############coupon codes##################
+############################################
+
+@app.get("/api/coupons")
+def get_coupons():
+    coupons_db =[]
+    cursor = db.coupons.find({})
+    for coupons in cursor:
+        coupons_db.append(fix_id(coupons))
+    return json.dumps(coupons_db)
+
+#Post a coupon
+@app.post("/api/coupons")
+def save_coupons():
+    coupons = request.get_json()
+    print(coupons)
+    db.coupons.insert_one(coupons)
+    return json.dumps(fix_id(coupons))
+
+
+
+
+
+
 
 #Put a product
 @app.put("/api/products/<int:index>")
-def update_product(index):
-    update_product = request.get_json()
+def update_products(index):
+    update_products = request.get_json()
     print(f"update the product with index {index}")
    
     if 0 <=index < len(products):
-        products[index] = update_product
-        return json.dumps(update_product), 200
+        products[index] = update_products
+        return json.dumps(update_products), 200
     else:
         return "that index does not exit", 404
 

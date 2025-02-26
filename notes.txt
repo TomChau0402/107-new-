@@ -1,5 +1,6 @@
 install virtual library
 
+1) install the virtual enviroment
 WIN py -m pip install virtualenv
 MAC python3 - pip virtualenv
 
@@ -18,4 +19,7 @@ MAC python3 -m pip install flask
 
 5 run server comman is py server.py
 
+
+add this for mongodb
+py -m install flask pymongo "pymongo[srv]" certifi
 new notes
